@@ -5,6 +5,7 @@ import morgan from 'morgan';
 
 import { errorHandler } from './middlewares';
 import router from './router';
+import { seedData } from './scripts/seeding';
 import { connectToDatabase } from './services';
 import { IAppConfig } from './types';
 
@@ -20,6 +21,7 @@ class App {
     this.errorHandling();
     this.handleUncaughtErrors();
     this.createDBConnection();
+    this.initScripts();
   }
 
   private config(): void {
@@ -54,6 +56,10 @@ class App {
 
   private async createDBConnection(): Promise<void> {
     await connectToDatabase(this.options.database);
+  }
+
+  private async initScripts(): Promise<void> {
+    await seedData();
   }
 
   public listen(): void {
