@@ -1,0 +1,27 @@
+# Node.js
+node_modules/
+
+# TypeScript
+dist/
+*.js
+*.js.map
+*.d.ts
+
+# Editor/IDE specific files
+.vscode/
+.idea/
+
+# Logs and debugging
+logs/
+*.log
+npm-debug.log*
+
+# Dependency directories
+jspm_packages/
+typings/
+
+# credentials
+.env
+
+# development
+coverage/
