@@ -3,7 +3,9 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 
+import { errorHandler } from './middlewares';
 import router from './router';
+import { connectToDatabase } from './services';
 import { IAppConfig } from './types';
 
 class App {
@@ -15,6 +17,9 @@ class App {
     this.options = options;
     this.config();
     this.routes();
+    this.errorHandling();
+    this.handleUncaughtErrors();
+    this.createDBConnection();
   }
 
   private config(): void {
@@ -34,6 +39,21 @@ class App {
     this.app.use('/', (_: Request, res: Response) => {
       res.status(404).json({ message: 'Not found' });
     });
+  }
+
+  private errorHandling(): void {
+    this.app.use(errorHandler);
+  }
+  
+  private handleUncaughtErrors(): void {
+    process.on('uncaughtException', (error: Error) => {
+      console.error('Uncaught Exception:', error);
+      process.exit(1);
+    });
+  }
+
+  private async createDBConnection(): Promise<void> {
+    await connectToDatabase(this.options.database);
   }
 
   public listen(): void {
