@@ -1,9 +1,11 @@
-import {IRouter, Request, Response, Router } from 'express';
+import { Router, IRouter } from 'express';
+
+import bookRoutes from './controllers/book/routes';
+import userRoutes from './controllers/user/routes';
 
 const router: IRouter = Router();
 
-router.get('/books', (req: Request, res: Response) => {
-  res.status(200).json({ message: 'List of books' });
-});
+router.use('/books', bookRoutes);
+router.use('/users', userRoutes);
 
 export default router;
